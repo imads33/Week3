@@ -102,6 +102,54 @@ public class MenuProgram {
         }
     }
 
+    public void deleteDuplicate() {
+        int choice;
+        System.out.println("1. Delete first Occurrence");
+        System.out.println("2. Delete last Occurrence");
+        System.out.println("3. Delete all Occurrence");
+        System.out.println("Please Choose your option :");
+        choice = sc.nextInt();
+        System.out.println("Enter Numbere :");
+        number = sc.nextInt();
+
+        switch (choice) {
+            case 1:
+                firstOccurrence(number);
+                break;
+            case 2:
+                lastOccurrence(number);
+                break;
+            case 3:
+                allOccurrence(number);
+                break;
+            default:
+                System.out.println("Invalid choice");
+                break;
+        }
+    }
+
+    public void sort(){
+        int choice;
+        System.out.println("1. Sort in ASC order (0 ... 99)");
+        System.out.println("2. Sort in DESC order (99 ... 0)");
+        System.out.println("Please Choose your option :");
+        choice = sc.nextInt();
+
+        switch (choice) {
+            case 1:
+                System.out.println("After sorting in ascending order");
+                sortASC();
+                break;
+            case 2:
+                System.out.println("After sorting in descending order");
+                sortDESC();
+                break;
+            default:
+                System.out.println("Invalid choice");
+                break;
+        }
+    }
+
     public void addElements() {
         for (int i = 0; i < arr.length; i++) {
             array[i] = arr[i];
@@ -124,10 +172,8 @@ public class MenuProgram {
     }
 
     public void insertLast(int number) {
-        for (int i = noOfElements; i > noOfElements - 1; i--) {
-            array[i] = number;
-            noOfElements++;
-        }
+        array[noOfElements] = number;
+        noOfElements++;
         displayArray('a');
     }
 
@@ -143,12 +189,16 @@ public class MenuProgram {
 
     /* ---------------- Deletion Operation Methods ------------ */
     public void deleteFirst() {
-        for (int i = 0; i <= noOfElements; i++) {
-            if (i == 0) {
-                deleted = array[i];
+        if (noOfElements == 0) {
+            System.out.println("Array is Empty");
+        } else {
+            for (int i = 0; i <= noOfElements; i++) {
+                if (i == 0) {
+                    deleted = array[i];
+                    array[i] = array[i + 1];
+                }
                 array[i] = array[i + 1];
             }
-            array[i] = array[i + 1];
         }
         noOfElements--;
         System.out.println(deleted + " is deleted");
@@ -156,10 +206,12 @@ public class MenuProgram {
     }
 
     public void deleteLast() {
-        for (int i = noOfElements - 1; i > noOfElements - 2; i--) {
-            deleted = array[i];
+        if (noOfElements == 0) {
+            System.out.println("Array is Empty");
+        } else {
+            deleted = array[noOfElements - 1];
+            noOfElements--;
         }
-        noOfElements--;
         System.out.println(deleted + " is deleted");
         displayArray('b');
     }
@@ -184,6 +236,73 @@ public class MenuProgram {
             }
         }
     }
+
+    public void firstOccurrence(int number) {
+        index=-1;
+        for(int i=0;i<noOfElements;i++){
+            if(array[i]==number){
+                index=i;
+                break;
+            }
+        }
+        if(index>-1){
+            for(int i=index;i<noOfElements;i++){
+                for(int j=i;j<noOfElements;j++){
+                    if(array[i]==array[j+1]){
+                        deleteSpecificIndex(i);
+                        break;
+                    }
+                }
+                break;
+            }
+        }else{
+                System.out.println("There is no duplicate element present for "+number);
+        }
+    }
+    public void lastOccurrence(int number){
+        index=-1;
+        for(int i=noOfElements;i>0;i--){
+            if(array[i]==number){
+                index=i;
+                break;
+            }
+        }
+        if(index>-1){
+            for(int i=index;i>0;i--){
+                for(int j=i;j>0;j--){
+                    if(array[i]==array[j-1]){
+                        deleteSpecificIndex(i);
+                        break;
+                    }
+                }
+                break;
+            }
+        }else{
+                System.out.println("There is no duplicate element present for "+number);
+        }
+    }
+    public void allOccurrence(int number) {
+        index=-1;
+        for(int i=0;i<noOfElements;i++){
+            if(array[i]==number){
+                index=i;
+                break;
+            }
+        }
+        if(index>-1){
+            for(int i=index;i<noOfElements;i++){
+                for(int j=i;j<noOfElements;j++){
+                    if(array[j]==number){
+                        deleteSpecificIndex(j);
+                    }
+                }
+                break;
+            }
+        }else{
+                System.out.println("There is no duplicate element present for "+number);
+        }
+    }
+
     /* ----------------------- END ---------------------- */
 
     /* ---------------- Search Operation Methods ------------ */
@@ -239,9 +358,9 @@ public class MenuProgram {
             for (int j = 0; j < noOfElements; j++) {
                 if (array[i] == array[j]) {
                     if(i==j){
-                        continue;
+                          continue;
                     }else{
-                        count++;
+                         count++;
                     }
                 }
             }
@@ -249,7 +368,7 @@ public class MenuProgram {
                 System.out.print(array[i] + ", ");
             }
             count=0;
-        }
+        }  
         if (count > 0) {
             System.out.println("There are no unique elements");
         }
@@ -263,6 +382,35 @@ public class MenuProgram {
     }
     /* ----------------------- END ---------------------- */
 
+    /* ------------------------ SORTING ------------------*/
+    public void sortASC(){
+        int temp=0;
+        for(int i=0;i<noOfElements;i++){
+            for(int j=i;j<noOfElements;j++){
+                if(array[j]<array[i]){
+                    temp=array[i];
+                    array[i]=array[j];
+                    array[j]=temp;
+                }
+            }
+        }
+        displayArray('s');
+    }
+    public void sortDESC(){
+        int temp=0;
+        for(int i=0;i<noOfElements;i++){
+            for(int j=i;j<noOfElements;j++){
+                if(array[j]>array[i]){
+                    temp=array[i];
+                    array[i]=array[j];
+                    array[j]=temp;
+                }
+            }
+        }
+        displayArray('s');
+    }
+    /* ------------------------ END ------------------*/
+
     public void displayArray(char c) {
         if (c == 'a') {
             System.out.println("Array After Insertion Operation");
@@ -271,9 +419,11 @@ public class MenuProgram {
         } else {
             System.out.println("Array elements are");
         }
+        System.out.print("[ ");
         for (int i = 0; i < noOfElements; i++) {
             System.out.print(array[i] + ", ");
-        }
+        };
+        System.out.println("]");
     }
 
     public static void main(String[] args) {
@@ -286,11 +436,16 @@ public class MenuProgram {
             System.out.println("\n1. Insertion");
             System.out.println("2. Deletion");
             System.out.println("3. Search");
-            System.out.println("4. Exit");
+            System.out.println("4. Delete duplicate");
+            System.out.println("5. Sort");
+            System.out.println("6. Exit");
             System.out.println("Please Choose your option :");
             choice = s.nextInt();
 
             switch (choice) {
+                if (choice == 6) {
+                    break;
+                }
                 case 1:
                     mp.insertElement();
                     break;
@@ -301,13 +456,14 @@ public class MenuProgram {
                     mp.searchElement();
                     break;
                 case 4:
+                    mp.deleteDuplicate();
+                    break;
+                case 5:
+                    mp.sort();
                     break;
                 default:
                     System.out.println("Invalid choice");
                     break;
-            }
-            if (choice == 4) {
-                break;
             }
         } while (true);
     }
