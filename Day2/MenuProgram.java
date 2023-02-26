@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class MenuProgram {
     Scanner sc = new Scanner(System.in);
     int arr[] = { 24, 56, 85, 1, 25, 36, 25, 24 };
-    int number, index, temp, deleted, noOfElements = arr.length;
+    int number, index=-1, temp, deleted, noOfElements = arr.length;
     int array[] = new int[100];
 
     public void insertElement() {
@@ -238,15 +238,9 @@ public class MenuProgram {
     }
 
     public void firstOccurrence(int number) {
-        index=-1;
-        for(int i=0;i<noOfElements;i++){
-            if(array[i]==number){
-                index=i;
-                break;
-            }
-        }
+        checkElement(number);
         if(index>-1){
-            for(int i=index;i<noOfElements;i++){
+            for(int i=index;i<noOfElements;){
                 for(int j=i;j<noOfElements;j++){
                     if(array[i]==array[j+1]){
                         deleteSpecificIndex(i);
@@ -260,7 +254,6 @@ public class MenuProgram {
         }
     }
     public void lastOccurrence(int number){
-        index=-1;
         for(int i=noOfElements;i>0;i--){
             if(array[i]==number){
                 index=i;
@@ -268,7 +261,7 @@ public class MenuProgram {
             }
         }
         if(index>-1){
-            for(int i=index;i>0;i--){
+            for(int i=index;i>0;){
                 for(int j=i;j>0;j--){
                     if(array[i]==array[j-1]){
                         deleteSpecificIndex(i);
@@ -282,24 +275,23 @@ public class MenuProgram {
         }
     }
     public void allOccurrence(int number) {
-        index=-1;
+        checkElement(number);
+        if(index>-1){
+            for(int j=index;j<noOfElements;j++){
+                if(array[j]==number){
+                     deleteSpecificIndex(j);
+                }
+            }
+        }else{
+                System.out.println("There is no duplicate element present for "+number);
+        }
+    }
+    public void checkElement(int number){
         for(int i=0;i<noOfElements;i++){
             if(array[i]==number){
                 index=i;
                 break;
             }
-        }
-        if(index>-1){
-            for(int i=index;i<noOfElements;i++){
-                for(int j=i;j<noOfElements;j++){
-                    if(array[j]==number){
-                        deleteSpecificIndex(j);
-                    }
-                }
-                break;
-            }
-        }else{
-                System.out.println("There is no duplicate element present for "+number);
         }
     }
 
@@ -411,6 +403,7 @@ public class MenuProgram {
     }
     /* ------------------------ END ------------------*/
 
+    
     public void displayArray(char c) {
         if (c == 'a') {
             System.out.println("Array After Insertion Operation");
@@ -441,11 +434,11 @@ public class MenuProgram {
             System.out.println("6. Exit");
             System.out.println("Please Choose your option :");
             choice = s.nextInt();
+            if(choice==6){
+                break;
+            }
 
             switch (choice) {
-                if (choice == 6) {
-                    break;
-                }
                 case 1:
                     mp.insertElement();
                     break;
